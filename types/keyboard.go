@@ -18,5 +18,6 @@ func NewKeyboard(btns [][]string) *Keyboard {
 	return &Keyboard{
 		Keyboard:       kbb,
 		InlineKeyboard: nil,
+		ResizeKeyboard: true,
 	}
 }
