@@ -22,6 +22,7 @@ type BotHandler struct {
 type BotAnswerHandler struct {
 	data       string
 	handlerFun BotAnswerFun
+	regex      *regexp.Regexp
 }
 
 var (
@@ -90,6 +91,17 @@ func (b *Bot) AddAnwser(data string, hander BotAnswerFun) {
 		handlerFun: hander,
 	})
 }
+func (b *Bot) AddRegexpAnwser(expr string, hander BotAnswerFun) error {
+	regex, err := regexp.Compile(expr)
+	if err != nil {
+		return err
+	}
+	b.answers = append(b.answers, &BotAnswerHandler{
+		handlerFun: hander,
+		regex:      regex,
+	})
+	return nil
+}
 
 func (b *Bot) Serve() error {
 	b.Setup()
@@ -136,9 +148,16 @@ func (b *Bot) setupHandler() {
 		}
 		if update.CallbackQuery != nil {
 			for _, handler := range b.answers {
-				if handler.data == update.CallbackQuery.Data {
-					handler.handlerFun(ctx)
-					return
+				if handler.regex != nil {
+					if handler.regex.MatchString(update.CallbackQuery.Data) {
+						handler.handlerFun(ctx)
+						return
+					}
+				} else {
+					if handler.data == update.CallbackQuery.Data {
+						handler.handlerFun(ctx)
+						return
+					}
 				}
 			}
 			if b.defaultAnswerFunc != nil {
