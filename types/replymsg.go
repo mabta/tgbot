@@ -13,7 +13,7 @@ type ReplyMessage struct {
 	Text                     string                `json:"text"`
 	ParseMode                ReplyMessageParseMode `json:"parse_mode,omitempty"`
 	ReplyMarkup              *ReplyMessageMarkup   `json:"reply_markup,omitempty"`
-	ReplyToMessageID         *bool                 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID         *int64                `json:"reply_to_message_id,omitempty"`
 	AllowSendingWithoutReply *bool                 `json:"allow_sending_without_reply,omitempty"`
 }
 
