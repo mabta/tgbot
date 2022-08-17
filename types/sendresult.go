@@ -1,5 +1,5 @@
 package types
 
 type SendResult interface {
-	ReplyResponse | APIResponse | CallbackQueryAnswerResponse
+	ReplyResponse | APIResponse | CallbackQueryAnswerResponse | GetChatRepsone
 }
